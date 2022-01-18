@@ -10,16 +10,24 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:navigationgift.helloWorld"
+		"onView:navigation"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "navigationgift.helloWorld",
-				"title": "Hello World"
+				"command": "navigationgift.goToLine",
+				"title": "Go to line"
 			}
-		]
+		],
+		"views": {
+			"explorer": [
+				{
+					"id": "navigation",
+					"name": "Navigation"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
