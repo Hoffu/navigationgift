@@ -18,11 +18,19 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     context.subscriptions.push(disposable);
+
+	vscode.window.onDidChangeTextEditorSelection(() => {
+		const editor = vscode.window.activeTextEditor;
+        if(editor) {
+			const document = editor.document;
+			vscode.window.registerTreeDataProvider('navigation', new NavigationProvider(textAdaptaion(document.getText())));
+		}
+    });
 }
 
 export function deactivate() {}
 
-function textAdaptaion(documentText: string) {
+function textAdaptaion(documentText: string): Map<number, string> {
 	let splitted = documentText.split(/\n\s*\n/);
 	splitted = splitted.map(
 		(capture) => capture.split(/\n/)
