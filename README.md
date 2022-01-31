@@ -1,10 +1,12 @@
-# Simple VS Code extension for work with GIFT file format
+# NavigationGIFT
 
-This is the README for your extension "navigationgift". After writing up a brief description, we recommend including the following sections.
+This is simple Visual Studio Code extension for work with GIFT file format
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Navigation in file, such as table of contents in microsoft word, Merge files feature and etc.
+
+-----
 
 For example if there is an image subfolder under your extension project workspace:
 
