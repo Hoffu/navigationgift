@@ -32,9 +32,9 @@ export function activate(context: vscode.ExtensionContext) {
 				let lastLine = editor.document.lineAt(editor.document.lineCount - 1);
 				let range = new vscode.Range(firstLine.range.start, lastLine.range.end);
 				editBuilder.replace(range, newText);
-				updateTreeView(navigationProvider);
-				vscode.window.showInformationMessage('Files merged successfully.');
 			});
+			updateTreeView(navigationProvider);
+			vscode.window.showInformationMessage('Files merged successfully.');
 		}
 	});
 	context.subscriptions.push(mergeFilesCommand);
