@@ -18,6 +18,10 @@
 			{
 				"command": "navigationgift.goToLine",
 				"title": "Go to line"
+			},
+			{
+				"command": "navigationgift.mergeFiles",
+				"title": "Merge open GIFT files"
 			}
 		],
 		"views": {

@@ -1,4 +1,3 @@
-import { callbackify } from 'util';
 import * as vscode from 'vscode';
 
 export class NavigationProvider implements vscode.TreeDataProvider<TreeItem> {
