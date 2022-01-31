@@ -1,11 +1,32 @@
 import * as vscode from 'vscode';
 
 export class NavigationProvider implements vscode.TreeDataProvider<TreeItem> {
-  onDidChangeTreeData?: vscode.Event<TreeItem|null|undefined>|undefined;
+  private _onDidChangeTreeData: vscode.EventEmitter<TreeItem | undefined | void> = new vscode.EventEmitter<TreeItem | undefined | void>();
+	readonly onDidChangeTreeData: vscode.Event<TreeItem | undefined | void> = this._onDidChangeTreeData.event;
 
   data: TreeItem[] = [];
 
   constructor(headers: Map<number, string>) {
+    this.updateData(headers);
+  }
+
+  refresh(): void {
+		this._onDidChangeTreeData.fire();
+	}
+
+  getTreeItem(element: TreeItem): vscode.TreeItem|Thenable<vscode.TreeItem> {
+    return element;
+  }
+
+  getChildren(element?: TreeItem|undefined): vscode.ProviderResult<TreeItem[]> {
+    if (element === undefined) {
+      return this.data;
+    }
+    return element.children;
+  }
+
+  updateData(headers: Map<number, string>): void {
+    this.data = [];
     const categoriesLines: number[] = [];
     headers.forEach((capture, line) => {
       if(capture.startsWith('$CATEGORY:')) {
@@ -33,17 +54,6 @@ export class NavigationProvider implements vscode.TreeDataProvider<TreeItem> {
     } else {
       headers.forEach((capture, line) => this.data.push(new TreeItem(capture, line)));
     }
-  }
-
-  getTreeItem(element: TreeItem): vscode.TreeItem|Thenable<vscode.TreeItem> {
-    return element;
-  }
-
-  getChildren(element?: TreeItem|undefined): vscode.ProviderResult<TreeItem[]> {
-    if (element === undefined) {
-      return this.data;
-    }
-    return element.children;
   }
 }
 

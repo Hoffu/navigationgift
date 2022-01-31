@@ -3,18 +3,19 @@ import { NavigationProvider, TreeItem } from './navigation';
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "navigationgift" is now active!');
-	const editor = assembleTreeDataProvider();
-
-	const disposable = vscode.commands.registerCommand('navigationgift.goToLine', (item: TreeItem) => {
-        if(editor) {
+	const navigationProvider = new NavigationProvider(textAdaptaion(""));
+    updateTreeView(navigationProvider);
+	vscode.window.registerTreeDataProvider('navigation', navigationProvider);
+	const goToLineCommand = vscode.commands.registerCommand('navigationgift.goToLine', (item: TreeItem) => {
+		const editor = vscode.window.activeTextEditor;
+		if(editor) {
 			const range = editor.document.lineAt(item.line - 1).range;
 			editor.revealRange(range);
 			editor.selection = new vscode.Selection(range.start, range.end);
 		}
-    });
-    context.subscriptions.push(disposable);
-
-	vscode.window.onDidChangeTextEditorSelection(() => assembleTreeDataProvider());
+	});
+	context.subscriptions.push(goToLineCommand);
+	vscode.window.onDidChangeTextEditorSelection(() => updateTreeView(navigationProvider));
 
 	const mergeFilesCommandName = 'navigationgift.mergeFiles';
 	const mergeFilesCommand = vscode.commands.registerCommand(mergeFilesCommandName, () => {
@@ -31,6 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 				let lastLine = editor.document.lineAt(editor.document.lineCount - 1);
 				let range = new vscode.Range(firstLine.range.start, lastLine.range.end);
 				editBuilder.replace(range, newText);
+				updateTreeView(navigationProvider);
 				vscode.window.showInformationMessage('Files merged successfully.');
 			});
 		}
@@ -74,11 +76,10 @@ function textAdaptaion(documentText: string): Map<number, string> {
 	return linesAndQuestions;
 }
 
-function assembleTreeDataProvider(): vscode.TextEditor | undefined {
-	const editor = vscode.window.activeTextEditor;
-    if (editor) {
-        const document = editor.document;
-		vscode.window.registerTreeDataProvider('navigation', new NavigationProvider(textAdaptaion(document.getText())));
-    }
-	return editor;
+function updateTreeView(navigationProvider: NavigationProvider): void {
+	const activeEditor = vscode.window.activeTextEditor;
+	if(activeEditor) {
+		navigationProvider.updateData(textAdaptaion(activeEditor.document.getText()));
+		navigationProvider.refresh();
+	}
 }
