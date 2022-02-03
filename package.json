@@ -22,6 +22,10 @@
 			{
 				"command": "navigationgift.mergeFiles",
 				"title": "Merge open GIFT files"
+			},
+			{
+				"command": "navigationgift.saveFile",
+				"title": "Save current file"
 			}
 		],
 		"views": {

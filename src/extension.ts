@@ -1,3 +1,5 @@
+import * as fs from 'fs';
+import path = require('path');
 import * as vscode from 'vscode';
 import { NavigationProvider, TreeItem } from './navigation';
 
@@ -38,12 +40,30 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 	context.subscriptions.push(mergeFilesCommand);
-
-	const mergeFilesButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+	const mergeFilesButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 120);
 	mergeFilesButton.command = mergeFilesCommandName;
 	mergeFilesButton.text = `$(files) Merge open GIFT files`;
 	mergeFilesButton.show();
 	context.subscriptions.push(mergeFilesButton);
+
+	let count = 0;
+	const vcsCommandName = 'navigationgift.saveFile';
+	const vcsCommand = vscode.commands.registerCommand(vcsCommandName, () => {
+		vscode.window.showInformationMessage('( ͡° ͜ʖ ͡°)');
+		const activeEditor = vscode.window.activeTextEditor;
+		if(activeEditor) {
+			const content = activeEditor.document.getText();
+			const filePath = path.join(activeEditor.document.fileName.replace(new RegExp('.gift\$'), '')
+				+ '_' + count++ + '.gift');
+			fs.writeFileSync(filePath, content, 'utf8');
+		}
+	});
+	context.subscriptions.push(vcsCommand);
+	const vcsButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 130);
+	vcsButton.command = vcsCommandName;
+	vcsButton.text = `$(clone) Save current version`;
+	vcsButton.show();
+	context.subscriptions.push(vcsButton);
 }
 
 export function deactivate() {}
