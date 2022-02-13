@@ -50,8 +50,11 @@ function textAdaptaion(documentText: string): Map<number, string> {
 
 function updateTreeView(navigationProvider: NavigationProvider): void {
 	const activeEditor = vscode.window.activeTextEditor;
-	if(activeEditor) {
+	if(activeEditor && activeEditor.document.fileName.endsWith('.gift')) {
 		navigationProvider.updateData(textAdaptaion(activeEditor.document.getText()));
+		navigationProvider.refresh();
+	} else {
+		navigationProvider.updateData(textAdaptaion(''));
 		navigationProvider.refresh();
 	}
 }

@@ -27,7 +27,13 @@
 					"name": "Navigation"
 				}
 			]
-		}
+		},
+		"viewsWelcome": [
+			{
+			  "view": "navigation",
+			  "contents": "Open file with gift format, please.\n[Open file](command:workbench.action.files.openFile)"
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
