@@ -16,6 +16,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 	context.subscriptions.push(goToLineCommand);
 	vscode.window.onDidChangeTextEditorSelection(() => updateTreeView(navigationProvider));
+	vscode.window.onDidChangeActiveTextEditor(() => updateTreeView(navigationProvider));
 }
 
 export function deactivate() {}
