@@ -26,34 +26,79 @@ export class NavigationProvider implements vscode.TreeDataProvider<TreeItem> {
   }
 
   updateData(headers: Map<number, string>): void {
+    if(headers.size != 0) {
+      let categoriesLines = this.searchForCategories(headers);
+      if(categoriesLines.size != 0) {
+        categoriesLines = this.searchForEndLines(categoriesLines, headers);
+        
+        const array = Array.from(categoriesLines.keys());
+        headers.forEach((capture, line) => {
+          if(line < array[0][0]) this.data.push(new TreeItem(capture, line));
+        });
+
+        this.writeData(categoriesLines, headers);
+      } else {
+        headers.forEach((capture, line) => this.data.push(new TreeItem(capture, line)));
+      }
+    }
+  }
+
+  searchForCategories(headers: Map<number, string>): Map<number[], string> {
     this.data = [];
-    const categoriesLines: number[] = [];
-    headers.forEach((capture, line) => {
+    const categoriesLines = new Map<number[], string>();
+    headers.forEach((capture, lines) => {
       if(capture.startsWith('$CATEGORY:')) {
-        categoriesLines.push(line);
+        categoriesLines.set([lines], capture);
       }
     });
+    return categoriesLines;
+  }
 
-    if(categoriesLines.length != 0) {
-      headers.forEach((capture, line) => {
-        if(line < categoriesLines[0]) this.data.push(new TreeItem(capture, line));
-      });
+  searchForEndLines(categoriesLines: Map<number[], string>, headers: Map<number, string>): Map<number[], string> {
+    let endLines: number[] = [];
+    categoriesLines.forEach((capture, lines) => endLines.push(lines[0] - 1));
+    endLines.shift();
+    const arr: number[] = Array.from(headers.keys());
+    endLines.push(arr[arr.length - 1] + 1);
+    categoriesLines.forEach((capture, lines) => {
+      let endLine = endLines.shift();
+      if(endLine) lines.push(endLine);
+    });
+    return categoriesLines;
+  }
 
-      for(let i = 0; i < categoriesLines.length; i++) {
-        let items: TreeItem[] = [];
-        let arr: number[] = Array.from(headers.keys());
-        let endBorder = (i == categoriesLines.length - 1) ? arr[arr.length - 1] + 1 : categoriesLines[i + 1];
-        headers.forEach((capture, line) => {
-          if(line > categoriesLines[i] && line < endBorder) {
-            items.push(new TreeItem(capture, line));
+  writeData(categoriesLines: Map<number[], string>, headers: Map<number, string>): void {
+    categoriesLines.forEach((category, linesOfCategory) => {
+      if(category.split('/').length == 1) {
+        let categories: TreeItem[] = [];
+        categoriesLines.forEach((capture, lines) => {
+          if(capture.startsWith(category) && linesOfCategory != lines) {
+            let items: TreeItem[] = this.getLowLevelTreeItemsArray(lines, headers, []);
+            categories.push(new TreeItem(capture.replace('$CATEGORY: ', ''), lines[0], items));
+          } else if(capture.startsWith(category)) {
+            categories = this.getLowLevelTreeItemsArray(lines, headers, categories);
           }
         });
-        let header: any = headers.get(categoriesLines[i]);
-        this.data.push(new TreeItem(header.replace('$CATEGORY: ', ''), categoriesLines[i], items));
+        this.data.push(new TreeItem(category.replace('$CATEGORY: ', ''), linesOfCategory[0], categories));
+      } else {
+        let count = 0;
+        categoriesLines.forEach((capture, lines) => {
+          if(capture.startsWith(category.split('/')[0])) count++;
+        });
+        if(count == 1) {
+          let items: TreeItem[] = this.getLowLevelTreeItemsArray(linesOfCategory, headers, []);
+          this.data.push(new TreeItem(category.replace('$CATEGORY: ', ''), linesOfCategory[0], items));
+        }
       }
-    } else {
-      headers.forEach((capture, line) => this.data.push(new TreeItem(capture, line)));
+    });
+  }
+
+  getLowLevelTreeItemsArray(lines: number[], headers: Map<number, string>, items: TreeItem[]): TreeItem[] {
+    for(let i = lines[0] + 1; i < lines[1]; i++) {
+      let header = headers.get(i);
+      if(header) items.push(new TreeItem(header, i));
     }
+    return items;
   }
 }
 
