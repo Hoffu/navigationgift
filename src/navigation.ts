@@ -74,7 +74,8 @@ export class NavigationProvider implements vscode.TreeDataProvider<TreeItem> {
         categoriesLines.forEach((capture, lines) => {
           if(capture.startsWith(category) && linesOfCategory != lines) {
             let items: TreeItem[] = this.getLowLevelTreeItemsArray(lines, headers, []);
-            categories.push(new TreeItem(capture.replace('$CATEGORY: ', ''), lines[0], items));
+            const categoryName = capture.split('/');
+            categories.push(new TreeItem(categoryName[categoryName.length - 1], lines[0], items));
           } else if(capture.startsWith(category)) {
             categories = this.getLowLevelTreeItemsArray(lines, headers, categories);
           }
