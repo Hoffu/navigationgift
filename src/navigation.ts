@@ -26,20 +26,18 @@ export class NavigationProvider implements vscode.TreeDataProvider<TreeItem> {
   }
 
   updateData(headers: Map<number, string>): void {
-    if(headers.size != 0) {
-      let categoriesLines = this.searchForCategories(headers);
-      if(categoriesLines.size != 0) {
-        categoriesLines = this.searchForEndLines(categoriesLines, headers);
-        
-        const array = Array.from(categoriesLines.keys());
-        headers.forEach((capture, line) => {
-          if(line < array[0][0]) this.data.push(new TreeItem(capture, line));
-        });
+    let categoriesLines = this.searchForCategories(headers);
+    if(categoriesLines.size != 0) {
+      categoriesLines = this.searchForEndLines(categoriesLines, headers);
+      
+      const array = Array.from(categoriesLines.keys());
+      headers.forEach((capture, line) => {
+        if(line < array[0][0]) this.data.push(new TreeItem(capture, line));
+      });
 
-        this.parseCategories(categoriesLines, headers);
-      } else {
-        headers.forEach((capture, line) => this.data.push(new TreeItem(capture, line)));
-      }
+      this.parseCategories(categoriesLines, headers);
+    } else {
+      headers.forEach((capture, line) => this.data.push(new TreeItem(capture, line)));
     }
   }
 
