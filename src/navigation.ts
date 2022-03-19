@@ -27,12 +27,12 @@ export class NavigationProvider implements vscode.TreeDataProvider<TreeItem> {
 
   updateData(headers: Map<number, string>): void {
     let categoriesLines = this.searchForCategories(headers);
-    if(categoriesLines.size != 0) {
+    if(categoriesLines.size !== 0) {
       categoriesLines = this.searchForEndLines(categoriesLines, headers);
       
       const array = Array.from(categoriesLines.keys());
       headers.forEach((capture, line) => {
-        if(line < array[0][0]) this.data.push(new TreeItem(capture, line));
+        if(line < array[0][0]) {this.data.push(new TreeItem(capture, line));}
       });
 
       this.parseCategories(categoriesLines, headers);
@@ -60,7 +60,7 @@ export class NavigationProvider implements vscode.TreeDataProvider<TreeItem> {
     endLines.push(arr[arr.length - 1] + 1);
     categoriesLines.forEach((capture, lines) => {
       let endLine = endLines.shift();
-      if(endLine) lines.push(endLine);
+      if(endLine) {lines.push(endLine);}
     });
     return categoriesLines;
   }
@@ -70,7 +70,7 @@ export class NavigationProvider implements vscode.TreeDataProvider<TreeItem> {
     for(let i = this.getCount(categoriesLines); i > 0; i--) {
       categoriesLines.forEach((capture, linesOfCategory) => {
         let subCategories: TreeItem[] = [];
-        if(capture.split('/').length == i) {
+        if(capture.split('/').length === i) {
           subCategories = this.getLowLevelTreeItemsArray(linesOfCategory, headers, subCategories);
           const splitted = capture.split('/')[i - 1];
           let items: TreeItem[] = [];
@@ -81,8 +81,8 @@ export class NavigationProvider implements vscode.TreeDataProvider<TreeItem> {
             }
           });
           const treeItem = new TreeItem(splitted.replace('$CATEGORY: ', ''), linesOfCategory[0], [...items, ...subCategories]);
-          if(capture.split('/')[i - 2] == undefined) this.data.push(treeItem);
-          else child.set(treeItem, [capture.split('/')[i - 2], capture]);
+          if(capture.split('/')[i - 2] === undefined) {this.data.push(treeItem);}
+          else {child.set(treeItem, [capture.split('/')[i - 2], capture]);}
         }
       });
     }
@@ -92,8 +92,8 @@ export class NavigationProvider implements vscode.TreeDataProvider<TreeItem> {
     });
   }
 
-  getCount(categoriesLines: Map<number[], string>):number {
-    let count:number = 0;
+  getCount(categoriesLines: Map<number[], string>): number {
+    let count: number = 0;
     categoriesLines.forEach((category) => {
       let length = category.split('/').length;
       count = length > count ? length : count;
@@ -104,7 +104,7 @@ export class NavigationProvider implements vscode.TreeDataProvider<TreeItem> {
   getLowLevelTreeItemsArray(lines: number[], headers: Map<number, string>, items: TreeItem[]): TreeItem[] {
     for(let i = lines[0] + 1; i < lines[1]; i++) {
       let header = headers.get(i);
-      if(header) items.push(new TreeItem(header, i));
+      if(header) {items.push(new TreeItem(header, i));}
     }
     return items;
   }
@@ -118,7 +118,7 @@ export class TreeItem extends vscode.TreeItem {
     "title": "Go to line",
     "command": "navigationgift.goToLine",
     "arguments": [this]
-  }
+  };
 
   constructor(label: string, line: number, children?: TreeItem[]) {
     super(
