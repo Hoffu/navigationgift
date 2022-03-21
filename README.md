@@ -6,7 +6,7 @@
 
 Навигация по файлу реализована в виде древовидной структуры.
 
-\!\[Open file\]\(preview-images/open-file.gif\)
+![Open file](preview-images/open-file.gif)
 
 ## Требования
 
