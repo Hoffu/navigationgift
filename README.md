@@ -1,50 +1,33 @@
 # NavigationGIFT
 
-This is simple Visual Studio Code extension for work with GIFT file format
+Простое расширение для Visual Studio Code, упрощающее работу с файлами формата GIFT.
 
-## Features
+## Использование
 
-Navigation in file, such as table of contents in microsoft word, Merge files feature and etc.
+Навигация по файлу реализована в виде древовидной структуры.
 
------
+\!\[Open file\]\(preview-images/open-file.gif\)
 
-For example if there is an image subfolder under your extension project workspace:
+## Требования
 
-\!\[feature X\]\(images/feature-x.png\)
+Для работы расширения требуется основное приложение Visual Studio Code.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Конфигурация расширения
 
-## Requirements
+Конфигурация не требуется
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Тестирование
 
-## Extension Settings
+Для всех функций и методов написаны unit-тесты.
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+## Известные проблемы
 
-For example:
+Известных проблем на данный момент не выявленно.
 
-This extension contributes the following settings:
+## Обратная связь
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
+Если у вас есть вопросы, проблемы, отчеты об ошибках и т. д., сообщите о проблеме в системе отслеживания проблем этого репозитория.
 
 ### 1.0.0
 
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+Первый выпуск расширения NavigationGIFT.
