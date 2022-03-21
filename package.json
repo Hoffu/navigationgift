@@ -1,6 +1,10 @@
 {
   "name": "navigationgift",
 	"displayName": "NavigationGIFT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Hoffu/navigationgift.git"
+	},
 	"description": "",
 	"version": "0.0.1",
 	"engines": {
