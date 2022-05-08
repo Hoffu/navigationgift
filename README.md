@@ -34,4 +34,4 @@
 
 ### Скачать расширение 
 
-[Скачать]()
+[Скачать](https://github.com/Hoffu/navigationgift/raw/master/navigationgift-0.0.1.vsix)
