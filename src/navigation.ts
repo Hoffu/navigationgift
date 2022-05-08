@@ -80,14 +80,14 @@ export class NavigationProvider implements vscode.TreeDataProvider<TreeItem> {
               child.delete(item);
             }
           });
-          const treeItem = new TreeItem(splitted.replace('$CATEGORY: ', ''), linesOfCategory[0], [...items, ...subCategories]);
+          const treeItem = new TreeItem(splitted.replace('$CATEGORY: ', '') + " (" + subCategories.length + ")", linesOfCategory[0], [...items, ...subCategories]);
           if(capture.split('/')[i - 2] === undefined) {this.data.push(treeItem);}
           else {child.set(treeItem, [capture.split('/')[i - 2], capture]);}
         }
       });
     }
     child.forEach((parent, item) => {
-      const treeItem = new TreeItem(parent[1].replace('$CATEGORY: ', ''), item.line, item.children);
+      const treeItem = new TreeItem(parent[1].replace('$CATEGORY: ', '') + " (" + item.children?.length + ")", item.line, item.children);
       this.data.push(treeItem);
     });
   }
