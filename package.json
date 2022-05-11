@@ -6,7 +6,7 @@
 		"url": "https://github.com/Hoffu/navigationgift.git"
 	},
 	"description": "",
-	"icon": "./images/navigation-gift-logo.png",
+	"icon": "images/navigation-gift-logo.png",
 	"version": "0.0.1",
 	"publisher": "Hoffu",
 	"engines": {
