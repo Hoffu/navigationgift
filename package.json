@@ -5,7 +5,7 @@
 		"type": "git",
 		"url": "https://github.com/Hoffu/navigationgift.git"
 	},
-	"description": "",
+	"description": "Extension for navigation through GIFT file",
 	"icon": "images/navigation-gift-logo.png",
 	"version": "0.0.1",
 	"publisher": "Hoffu",
